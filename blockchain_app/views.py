@@ -1,5 +1,6 @@
 from blockchain_app import app
 from flask import jsonify
+from blockchain_app import blockchain
 
 @app.route('/')
 @app.route('/health')
