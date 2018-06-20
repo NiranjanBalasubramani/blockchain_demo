@@ -33,7 +33,7 @@ Step 5 - Run flask on your terminal
 Step 6 (OPTIONAL) - If you want to run the app in the background, you can use supervisor package to do so...
     
     sudo apt-get install supervisor
-    cd /etc/supervisor/conf.d/blockchain.conf
+    sudo vi /etc/supervisor/conf.d/blockchain.conf
 
         #name of the process
         [program:blockchain]
