@@ -13,9 +13,6 @@ node_identifier = str(uuid4()).replace('-', '')
 # Instantiate the Blockchain
 blockchain = Blockchain()
 
-print("Node_identifier: ", node_identifier)
-print("BLOCKCHAIN_INSTANCE: ",blockchain)
-
 
 @app.route('/')
 @app.route('/health')
@@ -35,10 +32,8 @@ def mine_block():
     """
     # We run the proof of work algorithm to get the next proof...
     last_block = blockchain.return_last_block
-    print("PREVIOUS BLOCK HASH BRO: ", last_block['current_block_hash'])
     previous_hash = last_block['current_block_hash']
 
-    print("PREVIOUS_HASH: ", previous_hash)
     # last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_block)
 
@@ -76,7 +71,8 @@ def new_transaction():
 
     # Check that the required fields are being passed to the API
     required = ['sender', 'recipient', 'transaction_value']
-    if not all(k in request_data for k in required):
+
+    if not all(x in request_data for x in required):
         return 'Please enter the mandatory `sender`, `recipient` and `transaction_value` values', 400
 
     sender = request_data.get('sender')

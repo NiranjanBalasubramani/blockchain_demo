@@ -39,11 +39,7 @@ class Blockchain(object):
         :return: <dict> New block
         """
 
-        print("Proof in CNB: ", proof)
-        print("self active transaction: ", self.active_transaction)
-        print("previous_block_hash: ",previous_block_hash)
-
-        if previous_block_hash==None:
+        if previous_block_hash == None:
             previous_block_hash = 'GENESIS block will not have any previous hashes.'
 
         new_block = {
@@ -54,8 +50,6 @@ class Blockchain(object):
             'previous_block_hash': previous_block_hash,
             'current_block_hash': current_block_hash or self.hash_a_block(self.block_chain[-1])
         }
-
-        print("NEW BLOCK created: ", new_block)
 
         # Reset the current active transaction
         self.active_transaction = []
@@ -80,8 +74,6 @@ class Blockchain(object):
             'transaction_value': transaction_value
         })
 
-        # last_block = self.return_last_block()
-        # print("last_blockYOO: ", last_block)
         return self.return_last_block['index'] + 1
 
     # @staticmethod is a method that knows nothing about the class or instance it was called on. It just gets the argument that were passed
@@ -97,7 +89,7 @@ class Blockchain(object):
         # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
         block_string = json.dumps(block, sort_keys=True).encode()
         a = hashlib.sha256(block_string).hexdigest()
-        print("HASHSIHS: ",a)
+
         return hashlib.sha256(block_string).hexdigest()
 
     @property
@@ -118,14 +110,10 @@ class Blockchain(object):
         """
 
         last_proof = last_block['proof']
-        print("last_proof: ",last_proof)
         last_hash = self.hash_a_block(last_block)
-        print("LAST_HASH: ",last_hash)
         proof = 0
         while self.valid_proof(last_proof, proof,last_hash) is False:
             proof += 1
-
-        print("PROOF: ",proof)
 
         return proof
 
@@ -171,9 +159,7 @@ class Blockchain(object):
 
         while current_index < len(block_chain):
             block = block_chain[current_index]
-            print('{}'.format(last_block))
-            print('{}'.format(block))
-            print("\n-----------\n")
+
             # Check that the hash of the block is correct
             last_block_hash = self.hash_a_block(last_block)
             if block['current_block_hash'] != last_block_hash:
@@ -196,7 +182,7 @@ class Blockchain(object):
         """
 
         neighbours = self.nodes
-        print("Neighbors: ", neighbours)
+
         new_chain = None
 
         # We're only looking for chains longer than ours
@@ -205,14 +191,11 @@ class Blockchain(object):
         # Grab and verify the chains from all the nodes in our network
         for node in neighbours:
             response = requests.get('http://{}/v1/blockchain'.format(node))
-            print("RESPONSE: ",response)
 
             if response.status_code == 200:
                 length = response.json()['length']
                 block_chain = response.json()['chain']
 
-                print("length: ",length)
-                print("max_lenght: ",max_length)
                 # Check if the length is longer and the chain is valid
                 if length > max_length and self.valid_chain(block_chain):
                     max_length = length
